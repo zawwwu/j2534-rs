@@ -412,14 +412,21 @@ impl Default for PassThruMsg {
 
 impl Debug for PassThruMsg {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        f.debug_struct("PassThruMsg")
-            .field("protocol_id", &self.protocol_id)
-            .field("rx_status", &self.rx_status)
-            .field("tx_flags", &self.tx_flags)
-            .field("timestamp", &self.timestamp)
-            .field("extra_data_index", &self.extra_data_index)
-            .field("data", &&self.data[..self.data_size as usize])
-            .finish()
+        let protocol_id = self.protocol_id;
+        let rx_status = self.rx_status;
+        let tx_flags = self.tx_flags;
+        let timestamp = self.timestamp;
+        let extra_data_index = self.extra_data_index;
+        unsafe {
+            f.debug_struct("PassThruMsg")
+                .field("protocol_id", &protocol_id)
+                .field("rx_status", &rx_status)
+                .field("tx_flags", &tx_flags)
+                .field("timestamp", &timestamp)
+                .field("extra_data_index", &extra_data_index)
+                .field("data", &&self.data[..self.data_size as usize])
+                .finish()
+        }
     }
 }
 
